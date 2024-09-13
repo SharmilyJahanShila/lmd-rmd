@@ -1,50 +1,59 @@
 #include<stdio.h>
 #include<string.h>
 
-void LMD(char str[], int size){
-    char lmdg[100];  // Defined array with a reasonable size
-    strcpy(lmdg, str);
-    printf("LMD :\n");
+// Function for Leftmost Derivation (LMD)
+void LMD(char str[], int size) {
+    char virtual_str[size + 1];  // Ensure space for null-terminator
+    strcpy(virtual_str, str);
+    printf("LMD:\n");
     int counter = 0;
-    
-    lex:
-    printf("%d -> %s\n", ++counter, lmdg);
-    for(int i = 0; i < size; i++){
-        if(lmdg[i] == 'A'){
-            lmdg[i] = 'b';
-            goto lex;
-        } else if(lmdg[i] == 'B'){
-            lmdg[i] = 'c';
-            goto lex;
+
+    // Loop for Leftmost Derivation
+    Jump:
+    printf("Step %d -> %s\n", ++counter, virtual_str);
+    for(int i = 0; i < size; i++) {
+        if(virtual_str[i] == 'A') {
+            virtual_str[i] = 'b';
+            goto Jump;  // Jump to print next step after substitution
+        } else if(virtual_str[i] == 'B') {
+            virtual_str[i] = 'c';
+            goto Jump;
         }
     }
 }
 
-void RMD(char str[], int size){
-    printf("RMD :\n");
+// Function for Rightmost Derivation (RMD)
+void RMD(char str[], int size) {
+    printf("RMD:\n");
     int counter = 0;
-    
-    lex:
-    printf("%d -> %s\n", ++counter, str);
-    for(int i = size - 1; i >= 0; i--){
-        if(str[i] == 'A'){
+
+    // Loop for Rightmost Derivation
+    Jump:
+    printf("Step %d -> %s\n", ++counter, str);
+    for(int i = size - 1; i >= 0; i--) {
+        if(str[i] == 'A') {
             str[i] = 'b';
-            goto lex;
-        } else if(str[i] == 'B'){
+            goto Jump;  // Jump to print next step after substitution
+        } else if(str[i] == 'B') {
             str[i] = 'c';
-            goto lex;
+            goto Jump;
         }
     }
 }
 
-int main(){
-    char str[100];  // Allocating enough space for the string
+int main() {
+    char str[100];  // Allocate enough space for user input
 
-    printf("Enter The Context-Free Grammar: ");
-    scanf("%s", str);  // No need for '&' with strings in scanf
+    printf("Enter the Context-Free Grammar: ");
+    scanf("%s", str);  // Correct input handling
 
-    LMD(str, strlen(str));  // Call LMD
-    RMD(str, strlen(str));  // Call RMD
+    int size = strlen(str);  // Get the size of the input string
 
-    return 0;
+    // Leftmost Derivation
+    LMD(str, size);
+
+    // Rightmost Derivation
+    RMD(str, size);
+
+    return 0;
 }
